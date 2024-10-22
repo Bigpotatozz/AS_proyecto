@@ -1,12 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
-const { pool } = require('../config/connection');
-const {router_usuarios} = require('../routes/routes_usuario');
-const { router_libros } = require('../routes/routes_libros');
-const { router_auth } = require('../routes/routes_auth');
-
+const fileUpload = require('express-fileupload');
+const {connection} = require('../config/connection');
+const { router_usuarios } = require('../routes/routes_usuario');
 
 
 class Server{
@@ -36,17 +33,16 @@ class Server{
 
     async connection(){
         try{
-            await pool.query('SELECT 1'); // Esto verifica la conexión
-            console.log("Conexión a la base de datos establecida correctamente");
+            
+            await connection();
+
         }catch(e){
             throw new Error(e);
         }
     }
 
     routes(){
-       this.app.use('/api/usuarios', router_usuarios);
-       this.app.use('/api/libros', router_libros);
-       this.app.use('/api/auth', router_auth);
+        this.app.use('/api/usuario', router_usuarios);
     }
 
     listen(){
