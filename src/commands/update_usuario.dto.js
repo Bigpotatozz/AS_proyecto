@@ -1,11 +1,10 @@
 const { Dao_usuario } = require("../dao/usuario_dao");
 const { Usuario } = require("../model/usuario");
 
-class Create_usuario_dto {
+class Update_usuario_dto {
   constructor(nombre, correo, contrasenia) {
     this.nombre = nombre;
     this.correo = correo;
-    this.contrasenia = contrasenia;
   }
 
   validarNombre(nombre) {
@@ -13,13 +12,6 @@ class Create_usuario_dto {
       throw new Error("El nombre debe tener al menos 3 caracteres");
     }
     return nombre;
-  }
-
-  validarContrasenia(contrasenia) {
-    if (!contrasenia) {
-      throw new Error("La contraseña debe tener al menos 6 caracteres");
-    }
-    return contrasenia;
   }
 
   async validarCorreo(correo) {
@@ -35,14 +27,13 @@ class Create_usuario_dto {
     // Realizamos todas las validaciones aquí
     this.nombre = this.validarNombre(this.nombre);
     this.correo = await this.validarCorreo(this.correo);
-    this.contrasenia = this.validarContrasenia(this.contrasenia);
     return true;
   }
 
-  async insertarUsuario(data) {
+  async actualizarUsuario(data) {
     try {
       let dao_usuario = new Dao_usuario();
-      let user = await dao_usuario.dao_post(data);
+      let user = await dao_usuario.dao_update(data);
       return user;
     } catch (error) {
       throw error;
@@ -50,4 +41,4 @@ class Create_usuario_dto {
   }
 }
 
-module.exports = { Create_usuario_dto };
+module.exports = { Update_usuario_dto };

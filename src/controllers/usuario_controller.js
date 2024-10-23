@@ -1,28 +1,35 @@
+const { Create_usuario_dto } = require("../commands/create_usuario.dto");
+const { Update_usuario_dto } = require("../commands/update_usuario.dto");
+const { Dao_usuario } = require("../dao/usuario_dao");
 const { Usuario } = require("../model/usuario");
-const bcryptjs = require('bcryptjs');
+
 
 post = async (req, res) => {
 
     try{
         const {nombre, correo, contrasenia} = req.body;
-        
-        if(!nombre || !correo || !contrasenia){
-            return res.status(400).json({message: "Todos los campos son obligatorios"});
-        }
+    
+        let usuario = new Create_usuario_dto(nombre, correo, contrasenia);
+        await usuario.validar();
+        const user = await usuario.insertarUsuario({nombre: nombre, correo: correo, contrasenia: contrasenia}); 
 
-        let salt = bcryptjs.genSaltSync(10);
-        let password = bcryptjs.hashSync(contrasenia, salt);
 
-        const usuario = new Usuario();
-
-        const user = await usuario.model.create({nombre: nombre, correo: correo, contrasenia: password});
-
-        res.status(200).json({message: "Usuario registrado correctamente"});
+        res.status(200).json({message: "Usuario registrado correctamente",user});
 
 
     }catch(e){
         console.log(e);
-        res.status(500).json({message: "Error en el servidor"});
+
+        if(e.message === "El correo ya esta registrado"){
+            return res.status(400).json({ message: "El correo ya esta registrado" });
+        }else if(e.message === "El nombre debe tener al menos 3 caracteres"){
+            return res.status(400).json({ message: "El nombre debe tener al menos 3 caracteres" });
+        }
+        else if(e.message === "La contraseña debe tener al menos 6 caracteres"){
+            return res.status(400).json({ message: "La contraseña debe tener al menos 6 caracteres" });
+        }
+        
+        return res.status(500).json({ message: "Error en el servidor" });
     }
 };
 
@@ -31,18 +38,24 @@ update = async(req, res) => {
         const {id_usuario} = req.params;
         const {nombre, correo, contrasenia} = req.body;
 
-        if(!nombre || !correo || !contrasenia){
-            return res.status(400).json({message: "Todos los campos son obligatorios"});
-        }
-
-        const usuario = new Usuario();
-
-        const user = await usuario.model.update({nombre: nombre, correo: correo, contrasenia: contrasenia}, {where: {id_usuario: id_usuario}});
-
+        let usuario = new Update_usuario_dto(nombre, correo);
+        await usuario.validar();
+        await usuario.actualizarUsuario({id_usuario: id_usuario, nombre: nombre, correo: correo});
         res.status(200).json({message: "Usuario actualizado correctamente"});
 
     }catch(e){
         console.log(e);
+
+        if(e.message === "El correo ya esta registrado"){
+            return res.status(400).json({ message: "El correo ya esta registrado" });
+        }else if(e.message === "El nombre debe tener al menos 3 caracteres"){
+            return res.status(400).json({ message: "El nombre debe tener al menos 3 caracteres" });
+        }
+        else if(e.message === "La contraseña debe tener al menos 6 caracteres"){
+            return res.status(400).json({ message: "La contraseña debe tener al menos 6 caracteres" });
+        }
+        
+
         res.status(500).json({message: "Error en el servidor"});
     }
 }
@@ -50,10 +63,9 @@ update = async(req, res) => {
 
 getAll = async(req, res) => {
     try{
-        const usuario = new Usuario();
-
-        const users = await usuario.model.findAll();
-
+        
+        const dao_usuario = new Dao_usuario();
+        const users = await dao_usuario.dao_getAll();
         res.status(200).json(users);
 
     }catch(e){
