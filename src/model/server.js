@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const {connection} = require('../config/connection');
 const { router_usuarios } = require('../routes/routes_usuario');
+const { router_auth } = require('../routes/routes_auth');
 
 
 class Server{
@@ -43,6 +44,7 @@ class Server{
 
     routes(){
         this.app.use('/api/usuario', router_usuarios);
+        this.app.use('/api/auth', router_auth);
     }
 
     listen(){
