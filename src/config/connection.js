@@ -1,4 +1,5 @@
 const {Sequelize} = require('sequelize');
+const cloudinary = require('cloudinary').v2;
 
 
 const db_connection =  new Sequelize(process.env.DATABASE,  process.env.USER, process.env.PASSWORD, {
@@ -16,4 +17,13 @@ async function connection(){
 }
 
 
-module.exports = {db_connection, connection};
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.KEY_CLOUDINARY,
+    api_secret: process.env.API_SECRET 
+});
+
+
+module.exports = {db_connection, connection, cloudinary};

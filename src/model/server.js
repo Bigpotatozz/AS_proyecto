@@ -5,6 +5,7 @@ const fileUpload = require('express-fileupload');
 const {connection} = require('../config/connection');
 const { router_usuarios } = require('../routes/routes_usuario');
 const { router_auth } = require('../routes/routes_auth');
+const { router_libro } = require('../routes/routes_libro');
 
 
 class Server{
@@ -43,8 +44,9 @@ class Server{
     }
 
     routes(){
-        this.app.use('/api/usuario', router_usuarios);
+        this.app.use('/api/usuarios', router_usuarios);
         this.app.use('/api/auth', router_auth);
+        this.app.use('/api/libros', router_libro);
     }
 
     listen(){
