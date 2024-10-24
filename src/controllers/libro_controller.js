@@ -1,6 +1,7 @@
 const { Create_libro } = require("../commands/create_libro.dto");
 const { Update_libro } = require("../commands/update_libro.dto");
 const { Dao_libro } = require("../dao/libro_dao");
+const { libro_view_model } = require("../viewModel/libro_vm");
 
 
 const post = async (req, res) => {
@@ -54,6 +55,18 @@ const getAll = async (req, res) => {
     }
 };
 
+const getAllPublic = async (req, res) => {
+    try{
+        const libro = new Dao_libro();
+        const libro_vm = new libro_view_model();
+        const libros = await libro.get_dao();
+        const data = await libro_vm.formatear_data_libros(libros);
+
+        return res.status(200).json({libros: data});
+    }catch(e){
+        res.status(500).json({message: e.message});
+    }
+}
 
 
-module.exports = {post, update, getAll};
+module.exports = {post, update, getAll, getAllPublic};
