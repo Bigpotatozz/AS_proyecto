@@ -40,7 +40,7 @@ update = async(req, res) => {
 
         let usuario = new Update_usuario_dto(nombre, correo);
         await usuario.validar();
-        await usuario.actualizarUsuario({id_usuario: id_usuario, nombre: nombre, correo: correo});
+        await usuario.actualizarUsuario({id_usuario: id_usuario, nombre: nombre});
         res.status(200).json({message: "Usuario actualizado correctamente"});
 
     }catch(e){

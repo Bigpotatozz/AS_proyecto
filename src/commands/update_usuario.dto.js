@@ -4,7 +4,7 @@ const { Usuario } = require("../model/usuario");
 class Update_usuario_dto {
   constructor(nombre, correo, contrasenia) {
     this.nombre = nombre;
-    this.correo = correo;
+    //this.correo = correo;
   }
 
   validarNombre(nombre) {
@@ -13,7 +13,7 @@ class Update_usuario_dto {
     }
     return nombre;
   }
-
+/*
   async validarCorreo(correo) {
     const user = new Usuario();
     const user_info = await user.model.findOne({ where: { correo: correo } });
@@ -22,11 +22,11 @@ class Update_usuario_dto {
     }
     return correo;
   }
-
+*/
   async validar() {
     // Realizamos todas las validaciones aquí
     this.nombre = this.validarNombre(this.nombre);
-    this.correo = await this.validarCorreo(this.correo);
+    //this.correo = await this.validarCorreo(this.correo);
     return true;
   }
 

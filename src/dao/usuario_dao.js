@@ -27,7 +27,7 @@ class Dao_usuario {
         try{
            
             const usuario = new Usuario();
-            const user = await usuario.model.update({nombre: data.nombre, correo: data.correo}, {where: {id_usuario: data.id_usuario}});
+            const user = await usuario.model.update({nombre: data.nombre}, {where: {id_usuario: data.id_usuario}});
 
         }catch(error){
             console.log(error);
