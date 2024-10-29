@@ -50,7 +50,7 @@ const getAll = async (req, res) => {
     try{
         const libro = new Dao_libro();
         const libros = await libro.get_dao();
-        return res.status(200).json({libros: libros});
+        return res.status(200).json(libros);
     }catch(e){
         res.status(500).json({message: e.message});
     }
@@ -78,7 +78,7 @@ const getAllPublicTodo = async(req, res) => {
 
        const libros = new Libros_externos_app_service();
        const data = await libros.getLibrosExternos();
-        return res.status(200).json({libros: [...dataPropios,...dataPropios]});
+        return res.status(200).json({libros: [...data,...dataPropios]});
     }catch(e){
         res.status(500).json({message: e.message});
     }
