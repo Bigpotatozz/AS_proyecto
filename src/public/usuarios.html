@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="acciones" style="display: flex; ">
+        <div class="registrar" style="margin-left: 40px;">
+
+            <h1>REGISTRAR</h1>
+            <br>
+            <p>Nombre:</p>
+            <br>
+            <input type="text" id="nombreR">
+            <br>
+            <p>correo:</p>
+            <br>
+            <input type="text" id="correoR">
+            <br>
+            <p>Contraseña:</p>
+            <br>
+            <input type="password" id="contraseniaR">
+            <br>
+            <input type="submit" id="registrar">
+        </div>
+
+        <div class="modificar" style="margin-left: 100px;">
+            <h1>ACTUALIZAR</h1>
+            <p>Nombre</p>
+            <br>
+            <input type="text" id="nombre">
+            <br>
+            <p>Identificador del usuario</p>
+            <br>
+            <input type="number" id="id_usuario">
+            <br>
+            <input type="submit" id="actualizar">
+        </div>
+    </div>
+
+
+    <table class="table table-hover" id="tabla">
+        <thead>
+            <tr></tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+
+    </table>
+
+    <script>
+        let actualizar = document.getElementById('actualizar');
+        let tabla = document.getElementById('tabla');
+
+        // Función para obtener los usuarios
+        const obtenerUsuarios = async () => {
+            try {
+                // Esperar a que se complete el fetch y convertir la respuesta a JSON
+                let response = await fetch('http://localhost:8081/api/usuarios/obtenerUsuarios', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+
+                // Verificar que la respuesta es exitosa
+                if (response.ok) {
+                    let usuarios = await response.json();
+                    console.log(usuarios.usuarios);
+
+                    // Iterar sobre los usuarios y agregarlos a la tabla
+                    usuarios.forEach(usuario => {
+                        tabla.innerHTML += `
+                        <tr>
+                            <td>${usuario.id_usuario}</td>
+                            <td>${usuario.nombre}</td>
+                            <td>${usuario.correo}</td>
+                            <td>${usuario.estatus}</td>
+                        </tr>
+                    `;
+                    });
+                } else {
+                    alert('Error al obtener usuarios');
+                }
+            } catch (error) {
+                console.log(error);
+                alert('Ocurrió un error al obtener los usuarios');
+            }
+        };
+
+        // Llamar a la función para obtener los usuarios al cargar la página
+        obtenerUsuarios();
+
+        // Evento para actualizar el usuario
+        actualizar.addEventListener('click', async () => {
+            let nombre = document.getElementById('nombre').value;
+            let id_usuario = document.getElementById('id_usuario').value;
+
+            let data = {
+                nombre: nombre
+            };
+
+            try {
+                // Solicitud PUT para actualizar el usuario
+                let response = await fetch(`http://localhost:8081/api/usuarios/actualizarUsuario/${id_usuario}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                // Verificar si la actualización fue exitosa
+                if (response.ok) {
+                    alert('Usuario actualizado con éxito');
+                } else {
+                    alert('Error al actualizar el usuario');
+                }
+            } catch (error) {
+                console.log(error);
+                alert('Ocurrió un error al actualizar el usuario');
+            }
+        });
+
+
+        let registrar = document.getElementById('registrar');
+
+        registrar.addEventListener('click', async () => {
+
+
+            let correo = document.getElementById('correoR').value;
+            let contrasenia = document.getElementById('contraseniaR').value;
+            let nombre = document.getElementById('nombreR').value;
+
+            let data = {
+                correo: correo,
+                contrasenia: contrasenia,
+                nombre: nombre
+            }
+
+
+            try {
+                let registrar = await fetch('http://localhost:8081/api/usuarios/registrarUsuario', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+
+                })
+
+                alert('Usuario registrado con exito');
+            } catch (error) {
+                console.log(error);
+                alert('Ocurrio un error');
+            }
+
+
+        })
+    </script>
+
+</body>
+
+</html>

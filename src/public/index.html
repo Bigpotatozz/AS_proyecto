@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <title>Document</title>
+    
+</head>
+
+<body>
+    
+<div class="container">
+
+    <h1>INICIAR SESION</h1>
+    <br>
+    <p>Correo:</p>
+    <br>
+    <input type="text" id="correo">
+    <br>
+    <p>Contraseña:</p>
+    <br>
+    <input type="password" id="contrasenia">
+    <br>
+    <input type="submit" id="enviar">
+</div>
+</body>
+
+</html>
+
+
+
+<script>
+
+    let enviar = document.getElementById('enviar');
+
+    enviar.addEventListener('click', async () => {
+
+        let correo = document.getElementById('correo').value;
+        let contrasenia = document.getElementById('contrasenia').value;
+
+        let data = {
+            correo: correo,
+            contrasenia: contrasenia
+        }
+
+
+        try {
+            let registrar = await fetch(`http://localhost:8081/api/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+
+            })
+
+
+            if (registrar.status != 200) {
+                alert('ERROR AL INICIAR SESION')
+            } else {
+
+                window.location.href = './home.html'
+             
+            }
+
+        } catch (error) {
+            console.log(error);
+            alert('ERROR AL INICIAR SESION');
+        }
+
+
+    })
+</script>

@@ -1,3 +1,4 @@
+const { Libros_externos_app_service } = require("../appService/libros_externos_service");
 const { Create_libro } = require("../commands/create_libro.dto");
 const { Update_libro } = require("../commands/update_libro.dto");
 const { Dao_libro } = require("../dao/libro_dao");
@@ -68,5 +69,20 @@ const getAllPublic = async (req, res) => {
     }
 }
 
+const getAllPublicTodo = async(req, res) => {
+    try{
+        const libro = new Dao_libro();
+        const libro_vm = new libro_view_model();
+        const librosPropios = await libro.get_dao();
+        const dataPropios = await libro_vm.formatear_data_libros(librosPropios);
 
-module.exports = {post, update, getAll, getAllPublic};
+       const libros = new Libros_externos_app_service();
+       const data = await libros.getLibrosExternos();
+        return res.status(200).json({libros: [...dataPropios,...dataPropios]});
+    }catch(e){
+        res.status(500).json({message: e.message});
+    }
+}
+
+
+module.exports = {post, update, getAll, getAllPublic, getAllPublicTodo};

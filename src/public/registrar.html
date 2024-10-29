@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/index.css">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#">usuarios</a></li>
+            <li><a href="#">libros</a></li>
+        </ul>
+    </nav>
+    
+    
+    
+    <h1>REGISTRAR</h1>
+    <br>
+    <p>Nombre:</p>
+    <br>
+    <input type="text" id="nombre">
+    <br>
+    <p>correo:</p>
+    <br>
+    <input type="text" id="correo">
+    <br>
+    <p>Contraseña:</p>
+    <br>
+    <input type="password" id="contrasenia">
+    <br>
+    <input type="submit" id="login">
+</body>
+</html>
+
+
+
+<script>
+
+let enviar = document.getElementById('login');
+
+enviar.addEventListener('click', async() => {
+
+
+    let correo = document.getElementById('correo').value;
+    let contrasenia = document.getElementById('contrasenia').value;
+    let nombre = document.getElementById('nombre').value;
+
+    let data = {
+        correo: correo,
+        contrasenia: contrasenia,
+        nombre: nombre
+    }
+
+
+    try{
+        let registrar = await fetch('http://localhost:8081/api/usuarios/registrarUsuario', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        
+    })
+
+    alert('Usuario registrado con exito');
+    }catch(error){
+        console.log(error);
+        alert('Ocurrio un error');
+    }
+
+   
+})
+
+</script>

@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+nav {
+  padding: 15px;
+  background: #0B192C;
+  font-family: "Roboto Mono", monospace;
+  font-optical-sizing: auto;
+}
+nav ul {
+  display: flex;
+}
+nav ul li {
+  margin-right: 15px;
+  list-style: none;
+}
+nav ul li a {
+  text-decoration: none;
+  color: white;
+}/*# sourceMappingURL=registrar.css.map */

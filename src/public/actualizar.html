@@ -1,0 +1,93 @@
+
+<h1>Actualizar datos</h1>
+<p>Nombre</p>
+<br>
+<input type="text" id="nombre">
+<br>
+<p>Identificador del usuario</p>
+<br>
+<input type="number" id="id_usuario">
+<br>
+<input type="submit" id="login">
+
+<table id="tabla">
+    <tr>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Ciudad</th>
+    </tr>
+
+</table>
+
+<script>
+    let enviar = document.getElementById('login');
+    let tabla = document.getElementById('tabla');
+
+    // Función para obtener los usuarios
+    const obtenerUsuarios = async () => {
+        try {
+            // Esperar a que se complete el fetch y convertir la respuesta a JSON
+            let response = await fetch('http://localhost:8081/api/usuarios/obtenerUsuarios', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            // Verificar que la respuesta es exitosa
+            if (response.ok) {
+                let usuarios = await response.json();
+
+          
+                // Iterar sobre los usuarios y agregarlos a la tabla
+                usuarios.usuarios.forEach(usuario => {
+                    tabla.innerHTML += `
+                        <tr>
+                            <td>${usuario.nombre}</td>
+                            <td>${usuario.correo}</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                alert('Error al obtener usuarios');
+            }
+        } catch (error) {
+            console.log(error);
+            alert('Ocurrió un error al obtener los usuarios');
+        }
+    };
+
+    // Llamar a la función para obtener los usuarios al cargar la página
+    obtenerUsuarios();
+
+    // Evento para actualizar el usuario
+    enviar.addEventListener('click', async () => {
+        let nombre = document.getElementById('nombre').value;
+        let id_usuario = document.getElementById('id_usuario').value;
+
+        let data = {
+            nombre: nombre
+        };
+
+        try {
+            // Solicitud PUT para actualizar el usuario
+            let response = await fetch(`http://localhost:8081/api/usuarios/actualizarUsuario/${id_usuario}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            // Verificar si la actualización fue exitosa
+            if (response.ok) {
+                alert('Usuario actualizado con éxito');
+            } else {
+                alert('Error al actualizar el usuario');
+            }
+        } catch (error) {
+            console.log(error);
+            alert('Ocurrió un error al actualizar el usuario');
+        }
+    });
+</script>
