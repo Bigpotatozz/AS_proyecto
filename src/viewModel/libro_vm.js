@@ -7,11 +7,11 @@ class libro_view_model {
 
             data.forEach((libro) => {
                 const dato = {
-                    id_libro: libro.id_libro,
+                    id_libro: libro.id || libro.id_libro,
                     nombre: libro.nombre,
                     autor: libro.autor,
                     genero: libro.genero,
-                    ruta: libro.ruta
+                    ruta: libro.pdf_path || libro.ruta
                 }
 
                 datos.push(dato);

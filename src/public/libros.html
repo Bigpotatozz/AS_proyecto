@@ -109,7 +109,7 @@
 
   const obtener = async () => {
     try {
-      let obtener = await fetch('http://localhost:8081/api/libros/obtenerLibros', {
+      let obtener = await fetch('http://localhost:8081/api/libros/obtenerLibrosTodo', {
         method: 'GET'
       })
 
@@ -117,7 +117,7 @@
      
 
   
-      respuesta.libros.forEach(libro => {
+      respuesta.forEach(libro => {
         tabla.innerHTML += ` <tr onclick="mostrar_inputs(this)"
                         data-id="${libro.id_libro}"
                         data-nombre="${libro.nombre}"

@@ -1,36 +1,51 @@
-class Libros_externos_app_service{
+const { libro_view_model } = require("../viewModel/libro_vm");
 
-    constructor(){};
+class Libros_externos_app_service {
 
-    async getLibrosExternos(){
-        try{
-            const libros = await fetch('http://192.168.137.254:3000/api/books/', {
+    constructor() { };
+
+    async getLibrosExternos() {
+
+        const libro_vm = new libro_view_model();
+        try {
+            const libros_erick = await fetch('http://192.168.137.254:3000/api/books/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            /*
+            const libros_ruben = await fetch('http://192.168.137.254:3000/api/books/', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'}
             });
 
-            let books = await libros.json();
-
-            let datos = [];
-            books.forEach((libro) => {
-                const dato = {
-                    id_libro: libro.id,
-                    nombre: libro.nombre,
-                    autor: libro.autor,
-                    genero: libro.genero,
-                    ruta: libro.pdf_path
-                }
-
-                datos.push(dato);
+            const libros_luis = await fetch('http://192.168.137.254:3000/api/books/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'}
             });
-            return datos;
+*/
+            let books_erick = await libros_erick.json();
+            //let books_ruben = await libros_ruben.json();
+            //let books_luis = await libros_luis.json();
 
-        }catch(e){
+
+            let books_erick_formated = await libro_vm.formatear_data_libros(books_erick);
+            //let books_ruben_formated = libro_vm.formatear_data_libros(books_ruben);
+            //let books_luis_formated = libro_vm.formatear_data_libros(books_luis);
+
+
+            let libros_total = [...books_erick_formated]
+            return libros_total;
+
+        } catch (e) {
             console.log(e);
             return null;
         }
     }
 };
 
-module.exports = {Libros_externos_app_service};
+module.exports = { Libros_externos_app_service };

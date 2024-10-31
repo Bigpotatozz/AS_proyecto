@@ -74,11 +74,15 @@ const getAllPublicTodo = async(req, res) => {
         const libro = new Dao_libro();
         const libro_vm = new libro_view_model();
         const librosPropios = await libro.get_dao();
-        const dataPropios = await libro_vm.formatear_data_libros(librosPropios);
+        let dataPropios = await libro_vm.formatear_data_libros(librosPropios);
 
        const libros = new Libros_externos_app_service();
-       const data = await libros.getLibrosExternos();
-        return res.status(200).json({libros: [...data,...dataPropios]});
+       let data = await libros.getLibrosExternos();
+        
+     
+       let libros_total = [...dataPropios, ...data];
+
+        return res.status(200).json(libros_total);
     }catch(e){
         res.status(500).json({message: e.message});
     }
