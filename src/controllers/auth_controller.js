@@ -1,35 +1,24 @@
-const bcryptjs = require('bcryptjs');
+
 const { Usuario } = require("../model/usuario");
 const { where } = require('sequelize');
+const { Auth_dto } = require('../commands/auth_dto');
 
 const login = async (req, res) => {
     try{
 
         const {correo, contrasenia} = req.body;
 
-        if(!correo || !contrasenia){
-            return res.status(400).json({message: "correo y contraseña son requeridos"});
-        }
 
-        const usuario = new Usuario();
+        const auth_dto = new Auth_dto(correo, contrasenia);
 
-        const user = await usuario.model.findOne({where:{correo: correo}});
-
-        if(!user){
-            return res.status(400).json({message: "Usuario no encontrado"});
-        }
+        await auth_dto.iniciarSesion(correo, contrasenia);
         
-        const validate_password = bcryptjs.compareSync(contrasenia, user.contrasenia);
-        
+        return res.status(200).send('Ha iniciado sesion');
 
-        if(!validate_password){
-            return res.status(400).json({message: "Contraseña incorrecta"});
-        }
+    }catch(error){
+        console.log(error);
+        res.status(500).json({message: error.message});
 
-            return res.status(200).json({message: "Usuario logueado"});
-        
-    }catch(e){
-        res.status(500).json({message: e.message});
     }
 };
 
