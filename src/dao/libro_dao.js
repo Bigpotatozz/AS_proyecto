@@ -10,7 +10,7 @@ class Dao_libro {
             const book = new Libro();
             const pdf = await cloudinary.uploader.upload(libro.tempFilePath, { resource_type: "raw", format: "pdf", public_id: `pdfs/${Date.now()}-${data.nombre.replace(/\s+/g, '-')}` })
             const url_pdf = `${pdf.secure_url}`;
-            const libro_uploaded = book.model.create({ nombre: data.nombre, autor: data.autor, genero: data.genero, ruta: url_pdf });
+            const libro_uploaded = book.model.create({ nombre: data.nombre, autor: data.autor, genero: data.genero, ruta: url_pdf, universidad: 'Anahuac' });
 
             return libro_uploaded;
 

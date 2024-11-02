@@ -10,6 +10,7 @@ class Libro {
             autor: { type: DataTypes.STRING, allowNull: false },
             genero: { type: DataTypes.STRING, allowNull: false },
             ruta: { type: DataTypes.STRING},
+            universidad: { type: DataTypes.STRING, allowNull: false }
         }, {tableName: 'libro', timestamps: false});
     }
 }
