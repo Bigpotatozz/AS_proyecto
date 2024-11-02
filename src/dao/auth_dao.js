@@ -14,13 +14,15 @@ class Auth_dao {
                 throw new Error("Usuario no encontrado");
             }
 
+            console.log(user);
+            
             const validate_password = bcryptjs.compareSync(contrasenia, user.contrasenia);
 
             if (!validate_password) {
                 throw new Error("Contraseña incorrecta");
             }
 
-            return  'usuario logeado' 
+            return  user;
         } catch (error) {
             console.log(error)
             throw error

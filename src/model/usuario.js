@@ -8,6 +8,7 @@ class Usuario {
             nombre: { type: DataTypes.STRING, allowNull: false },
             correo: { type: DataTypes.STRING, allowNull: false },
             contrasenia: { type: DataTypes.STRING, allowNull: false },
+            rol: { type: DataTypes.STRING, allowNull: false },
             estatus: { type: DataTypes.BOOLEAN, defaultValue: true },
         }, {tableName: 'usuario', timestamps: false});
     }

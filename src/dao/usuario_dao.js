@@ -9,7 +9,7 @@ class Dao_usuario {
             let salt = bcryptjs.genSaltSync(10);
             let password = bcryptjs.hashSync(data.contrasenia, salt);
             const usuario = new Usuario();
-            const user = await usuario.model.create({nombre: data.nombre, correo: data.correo, contrasenia: password});
+            const user = await usuario.model.create({nombre: data.nombre, correo: data.correo, contrasenia: password, rol: data.rol});
 
             let user_without_password = { nombre: user.nombre, correo: user.correo };
             return user_without_password;

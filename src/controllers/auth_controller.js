@@ -11,13 +11,17 @@ const login = async (req, res) => {
 
         const auth_dto = new Auth_dto(correo, contrasenia);
 
-        await auth_dto.iniciarSesion(correo, contrasenia);
+       const user = await auth_dto.iniciarSesion(correo, contrasenia);
         
-        return res.status(200).send('Ha iniciado sesion');
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(200).json({message: "Usuario logeado correctamente",
+            usuario: user 
+        });
 
     }catch(error){
         console.log(error);
-        res.status(500).json({message: error.message});
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(500).json({message: error.message});
 
     }
 };

@@ -7,11 +7,11 @@ const { Usuario } = require("../model/usuario");
 post = async (req, res) => {
 
     try{
-        const {nombre, correo, contrasenia} = req.body;
+        const {nombre, correo, contrasenia, rol} = req.body;
     
-        let usuario = new Create_usuario_dto(nombre, correo, contrasenia);
+        let usuario = new Create_usuario_dto(nombre, correo, contrasenia, rol);
         await usuario.validar();
-        const user = await usuario.insertarUsuario({nombre: nombre, correo: correo, contrasenia: contrasenia}); 
+        const user = await usuario.insertarUsuario({nombre: nombre, correo: correo, contrasenia: contrasenia, rol: rol}); 
 
 
         res.status(200).json({message: "Usuario registrado correctamente",user});

@@ -32,7 +32,8 @@ async iniciarSesion(correo, contrasenia){
     try{
 
         const auth_dao = new Auth_dao();
-        await auth_dao.login(correo, contrasenia);
+        return await auth_dao.login(correo, contrasenia);
+
         
     }catch(error){
         console.log(error);

@@ -2,10 +2,11 @@ const { Dao_usuario } = require("../dao/usuario_dao");
 const { Usuario } = require("../model/usuario");
 
 class Create_usuario_dto {
-  constructor(nombre, correo, contrasenia) {
+  constructor(nombre, correo, contrasenia, rol) {
     this.nombre = nombre;
     this.correo = correo;
     this.contrasenia = contrasenia;
+    this.rol = rol;
   }
 
   validarNombre(nombre) {
