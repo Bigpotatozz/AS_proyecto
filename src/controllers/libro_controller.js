@@ -34,6 +34,8 @@ const update = async (req, res) => {
             libro = {};
         }
 
+        console.log(libro);
+
         let libro_dto = new Update_libro(data.nombre, data.autor, data.genero, libro);
 
         let libro_uploaded = await libro_dto.actualizarLibro(libro, {id_libro: id_libro, nombre: data.nombre, genero: data.genero, autor: data.autor});
@@ -41,7 +43,7 @@ const update = async (req, res) => {
         return res.status(200).json({message: 'Libro actualizado correctamente', libro: libro_uploaded});
         
     }catch(e){
-        console.log(error);
+        console.log(e);
         res.status(500).json({message: e.message});
     }
 };

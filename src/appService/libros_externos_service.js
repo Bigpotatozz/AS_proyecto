@@ -7,38 +7,58 @@ class Libros_externos_app_service {
     async getLibrosExternos() {
 
         const libro_vm = new libro_view_model();
+
+        let libros_total = [];
         try {
-            const libros_erick = await fetch('http://192.168.137.254:3000/api/books/', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
 
-            /*
-            const libros_ruben = await fetch('http://192.168.137.254:3000/api/books/', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'}
-            });
+            try{
+                const libros_erick = await fetch('http://192.168.137.254:3000/api/books/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-            const libros_luis = await fetch('http://192.168.137.254:3000/api/books/', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'}
-            });
-*/
-            let books_erick = await libros_erick.json();
-            //let books_ruben = await libros_ruben.json();
-            //let books_luis = await libros_luis.json();
+                libros_erick = await libros_erick.json();
+                let libros_erick_formated = await libro_vm.formatear_data_libros(libros_erick);
 
+                libros_total = [...libros_total, libros_erick_formated]
+            }catch(error){
+                console.log(error);
+            }
+               
 
-            let books_erick_formated = await libro_vm.formatear_data_libros(books_erick);
-            //let books_ruben_formated = libro_vm.formatear_data_libros(books_ruben);
-            //let books_luis_formated = libro_vm.formatear_data_libros(books_luis);
+               
 
+            try{
+                const libros_ruben = await fetch('http://192.168.137.254:3000/api/books/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'}
+                });
 
-            let libros_total = [...books_erick_formated]
+                libros_ruben = await libros_ruben.json();
+                let libros_ruben_formated = await libro_vm.formatear_data_libros(libros_ruben);
+
+                libros_total = [...libros_total, libros_ruben_formated]
+            }catch(error){
+                console.log(error);
+            }
+
+            try{
+                const libros_luis = await fetch('http://192.168.137.254:3000/api/books/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'}
+                });
+
+                libros_luis = await libros_luis.json();
+                let libros_luis_formated = await libro_vm.formatear_data_libros(libros_luis);
+                libros_total = [...libros_total, libros_luis_formated]
+            }catch(error){
+                console.log(error);
+            }
+
             return libros_total;
 
         } catch (e) {
